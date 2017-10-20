@@ -1,0 +1,15 @@
+{
+  "authors": [
+    {
+      "email": "thomscode@gmail.com",
+      "name": "Thom Williams"
+    }
+  ],
+  "description": "Composer installer for Drupal modules, themes, etc",
+  "license": "GPL v2",
+  "minimum-stability": "dev",
+  "name": "thomscode/drupal-installer",
+  "prefer-stable": true,
+  "require": {},
+  "type": "composer-plugin"
+}

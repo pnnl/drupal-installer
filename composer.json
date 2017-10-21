@@ -5,11 +5,25 @@
       "name": "Thom Williams"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "thomscode\\Composer\\": "src"
+    }
+  },
   "description": "Composer installer for Drupal modules, themes, etc",
+  "extra": {
+    "class": "thomscode\\Composer\\DrupalInstallerPlugin"
+  },
   "license": "GPL v2",
   "minimum-stability": "dev",
   "name": "thomscode/drupal-installer",
   "prefer-stable": true,
-  "require": {},
+  "require": {
+    "composer-plugin-api": "^1.1",
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "composer/composer": "^1.5"
+  },
   "type": "composer-plugin"
 }

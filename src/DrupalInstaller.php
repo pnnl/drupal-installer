@@ -53,13 +53,25 @@ class DrupalInstaller extends LibraryInstaller
     /** @var PackageInterface $package */
     protected $package;
 
+    /**
+     * DrupalInstaller constructor.
+     *
+     * @param IOInterface $io
+     * @param Composer $composer
+     * @param string $type
+     * @param Filesystem|null $filesystem
+     * @param BinaryInstaller|null $binaryInstaller
+     */
     public function __construct(
-      \Composer\IO\IOInterface $io,
-      \Composer\Composer $composer,
+      IOInterface $io,
+      Composer $composer,
       $type = 'drupal',
-      \Composer\Util\Filesystem $filesystem = null,
-      \Composer\Installer\BinaryInstaller $binaryInstaller = null
+      Filesystem $filesystem = null,
+      BinaryInstaller $binaryInstaller = null
     ) {
+        parent::__construct($io, $composer, $type, $filesystem,
+          $binaryInstaller);
+
         $this->types = [
           "drupal-core",
           "drupal-drush",
@@ -72,8 +84,9 @@ class DrupalInstaller extends LibraryInstaller
           "drupal-custom-profile",
         ];
 
-        parent::__construct($io, $composer, $type, $filesystem,
-          $binaryInstaller);
+        // Load configuration from composer.json
+        $extra = $this->composer->getPackage()->getExtra();
+        $this->config = empty($extra[self::EXTRA]) ? [] : $extra[self::EXTRA];
     }
 
     /**

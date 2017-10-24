@@ -29,5 +29,6 @@
   "require-dev": {
     "composer/composer": "^1.5"
   },
-  "type": "composer-plugin"
+  "type": "composer-plugin",
+  "version": "7.0.0"
 }

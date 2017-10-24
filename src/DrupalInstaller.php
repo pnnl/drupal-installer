@@ -127,8 +127,109 @@ class DrupalInstaller extends LibraryInstaller
                 return "$basePath/profiles/contrib";
             case "drupal-custom-profile":
                 return "$basePath/profiles/custom";
-            default:
-                return parent::getInstallPath($package);
+    }
+
+    /**
+     * @param int $type - Type of package (class constant)
+     *
+     * @return string - base path for package
+     * @throws \Exception
+     */
+    protected function getBase($type)
+    {
+        $base = $this->getWebroot();
+
+        if ($type != self::CORE && $type != self::PROFILE) {
+            $base .= "/sites/all";
         }
+
+        return $base;
+    }
+
+    /**
+     * @param string $key
+     * @param null|string $default
+     *
+     * @return mixed|null
+     */
+    protected function getConfig($key, $default = null)
+    {
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        } else {
+            return $default;
+        }
+    }
+
+    /**
+     * Retrieve just the package name from the packages "prettyName"
+     *  prettyName = "vendor/name"
+     *
+     * @return string
+     */
+    protected function getPackageName()
+    {
+        $name = $this->package->getPrettyName();
+        if (strpos($name, '/') !== false) {
+            list(, $name) = explode('/', $name);
+        }
+        return $name;
+    }
+
+    /**
+     * Get the target path after the root for the package
+     *
+     * @param string $type
+     * @param bool $custom
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getTargetPath($type, $custom = false)
+    {
+        switch ($type) {
+            case self::CORE:
+                $path = '';
+                break;
+            case self::DRUSH:
+                $path = "drush";
+                break;
+            case self::LIBRARY:
+                $path = "libraries";
+                break;
+            case self::MODULE:
+                $path = "modules";
+                break;
+            case self::THEME:
+                $path = "themes";
+                break;
+            case self::PROFILE:
+                $path = "profiles";
+                break;
+            default:
+                throw new \Exception("Unsupported package type: $type");
+        }
+
+        if ($type === self::MODULE || $type === self::THEME) {
+            $path .= $custom ? "/custom" : "/contrib";
+        }
+
+        if ($type !== self::CORE) {
+            $name = $this->getPackageName();
+            $path .= "/$name";
+        }
+
+        return $path;
+    }
+
+    /**
+     * Get the webroot specified in the "extra" composer config
+     * Default: docroot
+     *
+     * @return string
+     */
+    protected function getWebroot()
+    {
+        return $this->getConfig(self::ROOT, "docroot");
     }
 }

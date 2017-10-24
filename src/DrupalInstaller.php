@@ -18,8 +18,40 @@ use Composer\Util\Filesystem;
 
 class DrupalInstaller extends LibraryInstaller
 {
+
+    /** @const string EXTRA */
+    const EXTRA = "drupal-installer";
+
+    /** @const string ROOT */
+    const ROOT = "webroot";
+
+    /** @const int CORE */
+    const CORE = 0;
+
+    /** @const int DRUSH */
+    const DRUSH = 1;
+
+    /** @const int LIBRARY */
+    const LIBRARY = 2;
+
+    /** @const int MODULE */
+    const MODULE = 3;
+
+    /** @const int THEME */
+    const THEME = 4;
+
+    /** @const int PROFILE */
+    const PROFILE = 5;
+
+
     /** @var array $types - types supported by this installer */
     protected $types;
+
+    /** @var array $config */
+    protected $config;
+
+    /** @var PackageInterface $package */
+    protected $package;
 
     public function __construct(
       \Composer\IO\IOInterface $io,

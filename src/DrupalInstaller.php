@@ -102,31 +102,45 @@ class DrupalInstaller extends LibraryInstaller
      */
     public function getInstallPath(PackageInterface $package)
     {
-        // TODO: Define default base path
-        // TODO: Define how Extra is defined in composer.json
-        // TODO: Retrieve extra config for base path
-        // TODO: allow user to define custom path (maybe)
-        $basePath = $this->composer->getConfig()->get("extra");
+        // Load the current package
+        $this->package = $package;
+        $packageType = $this->package->getType();
 
-        switch ($package->getType()) {
+        $custom = (strpos($packageType, 'custom') !== false) ? true : false;
+
+        switch ($packageType) {
             case "drupal-core":
-                return $basePath;
+                $type = self::CORE;
+                break;
             case "drupal-drush":
-                return "drush/contrib";
+                $type = self::DRUSH;
+                break;
             case "drupal-library":
-                return "$basePath/libraries/";
-            case "drupal-module":
-                return "$basePath/modules/contrib";
+                $type = self::LIBRARY;
+                break;
             case "drupal-custom-module":
-                return "$basePath/modules/custom";
-            case "drupal-theme":
-                return "$basePath/themes/contrib";
+            case "drupal-module":
+                $type = self::MODULE;
+                break;
             case "drupal-custom-theme":
-                return "$basePath/themes/custom";
-            case "drupal-profile":
-                return "$basePath/profiles/contrib";
+            case "drupal-theme":
+                $type = self::THEME;
+                break;
             case "drupal-custom-profile":
-                return "$basePath/profiles/custom";
+            case "drupal-profile":
+                $type = self::PROFILE;
+                break;
+            default:
+                throw new \Exception("Unsupported type: $packageType");
+                break;
+        }
+
+        $base = $this->getBase($type);
+        $target = $this->getTargetPath($type, $custom);
+
+        $path = (!empty($target)) ? "$base/$target" : $base;
+
+        return $path;
     }
 
     /**

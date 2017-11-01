@@ -19,11 +19,23 @@ use Composer\Util\Filesystem;
 class DrupalInstaller extends LibraryInstaller
 {
 
-    /** @const string EXTRA */
+    /** @const string EXTRA - key in extra used as config root for this installer */
     const EXTRA = "drupal-installer";
 
-    /** @const string ROOT */
+    /** @const string ROOT - webroot key used in composer.json */
     const ROOT = "webroot";
+
+    /** @const string NPM - npm support key used in composer.json */
+    const NPM = "npm-support";
+
+    /** @const string BOWER - bower support key used in composer.json */
+    const BOWER = "bower-support";
+
+    /** @const string NPM_TYPE - type key from npm asset package */
+    const NPM_TYPE = "npm-asset";
+
+    /** @const string BOWER_TYPE - type key from bower asset package */
+    const BOWER_TYPE = "bower-asset";
 
     /** @const int CORE */
     const CORE = 0;
@@ -52,6 +64,15 @@ class DrupalInstaller extends LibraryInstaller
 
     /** @var PackageInterface $package */
     protected $package;
+
+    /** @var string $webroot - The webroot specified in the config. Default: docroot */
+    protected $webroot;
+
+    /** @var bool $npm - Support npm-asset type. Default: true */
+    protected $npm;
+
+    /** @var bool $bower - Support bower-asset type. Default: true */
+    protected $bower;
 
     /**
      * DrupalInstaller constructor.
@@ -87,6 +108,19 @@ class DrupalInstaller extends LibraryInstaller
         // Load configuration from composer.json
         $extra = $this->composer->getPackage()->getExtra();
         $this->config = empty($extra[self::EXTRA]) ? [] : $extra[self::EXTRA];
+
+        // Retrieve configuration values into class
+        $this->webroot = $this->getConfig(self::ROOT, "docroot");
+        $this->npm = $this->getConfig(self::NPM, true);
+        $this->bower = $this->getConfig(self::BOWER, true);
+
+        // Add additional supported types
+        if ($this->npm) {
+            $this->types[] = self::NPM_TYPE;
+        }
+        if ($this->bower) {
+            $this->types[] = self::BOWER_TYPE;
+        }
     }
 
     /**
@@ -116,6 +150,9 @@ class DrupalInstaller extends LibraryInstaller
                 $type = self::DRUSH;
                 break;
             case "drupal-library":
+            case self::NPM_TYPE:
+            case self::BOWER_TYPE:
+                // NPM_TYPE and BOWER_TYPE will only be referenced if already supported.
                 $type = self::LIBRARY;
                 break;
             case "drupal-custom-module":
@@ -151,7 +188,7 @@ class DrupalInstaller extends LibraryInstaller
      */
     protected function getBase($type)
     {
-        $base = $this->getWebroot();
+        $base = $this->webroot;
 
         if ($type != self::CORE && $type != self::PROFILE) {
             $base .= "/sites/all";
@@ -162,7 +199,7 @@ class DrupalInstaller extends LibraryInstaller
 
     /**
      * @param string $key
-     * @param null|string $default
+     * @param mixed $default
      *
      * @return mixed|null
      */
@@ -234,16 +271,5 @@ class DrupalInstaller extends LibraryInstaller
         }
 
         return $path;
-    }
-
-    /**
-     * Get the webroot specified in the "extra" composer config
-     * Default: docroot
-     *
-     * @return string
-     */
-    protected function getWebroot()
-    {
-        return $this->getConfig(self::ROOT, "docroot");
     }
 }

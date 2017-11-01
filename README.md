@@ -14,10 +14,19 @@ No configuration required. Will install all Drupal components to their proper lo
 {
   "extra": {
     "drupal-installer": {
-      "webroot": "docroot"
+      "webroot": "docroot",
+      "npm-support": true,
+      "bower-support": true
     }
   }
 }
 ```
 
-The Drupal webroot is configurable relative to the root of your repository. Default webroot is `docroot`.
+The Drupal webroot is configurable relative to the root of your repository.  
+Default webroot is `docroot`.
+
+Support `npm-asset` and `bower-asset`
+(from [fxp/composer-asset-plugin](https://packagist.org/packages/fxp/composer-asset-plugin) and [hiqdev/asset-packagist](https://packagist.org/packages/hiqdev/asset-packagist))
+as `drupal-library`'s.
+This installs packages of type `npm-asset` and `bower-asset` into Drupal's libraries folder.  
+Default: `true`. Support for NPM and Bower assets can be enabled/disabled individually.

@@ -3,7 +3,7 @@ A composer installer for Drupal 7. Installs modules, themes, etc to their proper
 
 ## How to install
 ```bash
-composer require thomscode/drupal-installer:^7.0
+composer require pnnl/drupal-installer:^7.0
 ```
 
 ## How to use

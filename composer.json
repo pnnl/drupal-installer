@@ -20,7 +20,7 @@
   },
   "license": "GPL v2",
   "minimum-stability": "dev",
-  "name": "thomscode/drupal-installer",
+  "name": "pnnl/drupal-installer",
   "prefer-stable": true,
   "require": {
     "composer-plugin-api": "^1.1",

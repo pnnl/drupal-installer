@@ -180,7 +180,7 @@ class DrupalInstaller extends LibraryInstaller
         $base = $this->getBase($type);
         $target = $this->getTargetPath($type, $custom);
 
-        $path = (!empty($target)) ? "$base/$target" : $base;
+        $path = (!empty($base)) ? "$base/$target" : $target;
 
         return $path;
     }
@@ -193,13 +193,7 @@ class DrupalInstaller extends LibraryInstaller
      */
     protected function getBase($type)
     {
-        $base = $this->webroot;
-
-        if ($type != self::CORE && $type != self::PROFILE) {
-            $base .= "/sites/all";
-        }
-
-        return $base;
+        return (self::DRUSH === $type) ? "" : $this->webroot;
     }
 
     /**
@@ -241,7 +235,7 @@ class DrupalInstaller extends LibraryInstaller
     {
         switch ($type) {
             case self::CORE:
-                $path = '';
+                $path = 'core';
                 break;
             case self::DRUSH:
                 $path = "drush";
@@ -262,11 +256,11 @@ class DrupalInstaller extends LibraryInstaller
                 throw new \Exception("Unsupported package type: $type");
         }
 
-        if ($type === self::MODULE || $type === self::THEME) {
+        if (self::CORE !== $type && self::LIBRARY !== $type) {
             $path .= $custom ? "/custom" : "/contrib";
         }
 
-        if ($type !== self::CORE) {
+        if (self::CORE !== $type) {
             $name = $this->getPackageName();
             $path .= "/$name";
         }

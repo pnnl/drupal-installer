@@ -210,11 +210,7 @@ class DrupalInstaller extends LibraryInstaller
      */
     protected function getConfig($key, $default = null)
     {
-        if (isset($this->config[$key])) {
-            return $this->config[$key];
-        } else {
-            return $default;
-        }
+        return isset($this->config[$key]) ? $this->config[$key] : $default;
     }
 
     /**

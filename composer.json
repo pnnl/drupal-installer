@@ -12,7 +12,7 @@
   },
   "conflict": {
     "composer/installers": "*",
-    "drupal/core": "8.*"
+    "drupal/drupal": "7.*"
   },
   "description": "Composer installer for Drupal modules, themes, etc",
   "extra": {
@@ -30,5 +30,5 @@
     "composer/composer": "^1.5"
   },
   "type": "composer-plugin",
-  "version": "7.0.1"
+  "version": "8.0.0"
 }

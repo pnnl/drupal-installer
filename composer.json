@@ -7,7 +7,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "thomscode\\Composer\\": "src"
+      "pnnl\\Composer\\": "src"
     }
   },
   "conflict": {
@@ -16,7 +16,7 @@
   },
   "description": "Composer installer for Drupal modules, themes, etc",
   "extra": {
-    "class": "thomscode\\Composer\\DrupalInstallerPlugin"
+    "class": "pnnl\\Composer\\DrupalInstallerPlugin"
   },
   "license": "GPL v2",
   "minimum-stability": "dev",
@@ -30,5 +30,5 @@
     "composer/composer": "^1.5"
   },
   "type": "composer-plugin",
-  "version": "7.0.0"
+  "version": "7.0.1"
 }

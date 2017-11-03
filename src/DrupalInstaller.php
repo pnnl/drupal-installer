@@ -6,7 +6,7 @@
  * Time: 12:45 PM
  */
 
-namespace thomscode\Composer;
+namespace pnnl\Composer;
 
 
 use Composer\Composer;
@@ -16,6 +16,11 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Util\Filesystem;
 
+/**
+ * Class DrupalInstaller
+ *
+ * @package pnnl\Composer
+ */
 class DrupalInstaller extends LibraryInstaller
 {
 

@@ -6,13 +6,18 @@
  * Time: 12:43 PM
  */
 
-namespace thomscode\Composer;
+namespace pnnl\Composer;
 
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
+/**
+ * Class DrupalInstallerPlugin
+ *
+ * @package pnnl\Composer
+ */
 class DrupalInstallerPlugin implements PluginInterface
 {
 

@@ -195,7 +195,7 @@ class DrupalInstaller extends LibraryInstaller
     {
         $base = $this->webroot;
 
-        if ($type != self::CORE && $type != self::PROFILE) {
+        if (self::CORE != $type && self::PROFILE != $type) {
             $base .= "/sites/all";
         }
 
@@ -262,11 +262,11 @@ class DrupalInstaller extends LibraryInstaller
                 throw new \Exception("Unsupported package type: $type");
         }
 
-        if ($type === self::MODULE || $type === self::THEME) {
+        if (self::MODULE === $type || self::THEME === $type) {
             $path .= $custom ? "/custom" : "/contrib";
         }
 
-        if ($type !== self::CORE) {
+        if (self::CORE !== $type) {
             $name = $this->getPackageName();
             $path .= "/$name";
         }

@@ -1,0 +1,22 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - php
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    exclude_fingerprints:
+    - 66559806a49722b42ab52478696602fb # Short variable name ($io)
+    - 9f8720938c1545c9a5bc251214ec9faa # Cyclomatic Complexity of 14, due to switch
+    - 0c80f97fed3e60b2e5e65d753eeaaeca # Cyclomatic Complexity of 11, due to switch
+    - 7732b30f79bbacbaa7da752174dd0616 # Short variable name ($io)
+ratings:
+  paths:
+  - "**.php"
+exclude_paths:
+- vendor/
+- .idea/

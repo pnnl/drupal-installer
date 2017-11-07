@@ -82,10 +82,10 @@ class DrupalInstaller extends LibraryInstaller
     /**
      * DrupalInstaller constructor.
      *
-     * @param IOInterface $io
-     * @param Composer $composer
-     * @param string $type
-     * @param Filesystem|null $filesystem
+     * @param IOInterface          $io
+     * @param Composer             $composer
+     * @param string               $type
+     * @param Filesystem|null      $filesystem
      * @param BinaryInstaller|null $binaryInstaller
      */
     public function __construct(
@@ -204,7 +204,7 @@ class DrupalInstaller extends LibraryInstaller
 
     /**
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return mixed|null
      */
@@ -225,6 +225,7 @@ class DrupalInstaller extends LibraryInstaller
         if (strpos($name, '/') !== false) {
             list(, $name) = explode('/', $name);
         }
+
         return $name;
     }
 
@@ -232,7 +233,7 @@ class DrupalInstaller extends LibraryInstaller
      * Get the target path after the root for the package
      *
      * @param string $type
-     * @param bool $custom
+     * @param bool   $custom
      *
      * @return string
      * @throws \Exception

@@ -82,32 +82,32 @@ class DrupalInstaller extends LibraryInstaller
     /**
      * DrupalInstaller constructor.
      *
-     * @param IOInterface $io
-     * @param Composer $composer
-     * @param string $type
-     * @param Filesystem|null $filesystem
+     * @param IOInterface          $io
+     * @param Composer             $composer
+     * @param string               $type
+     * @param Filesystem|null      $filesystem
      * @param BinaryInstaller|null $binaryInstaller
      */
     public function __construct(
-      IOInterface $io,
-      Composer $composer,
-      $type = 'drupal',
-      Filesystem $filesystem = null,
-      BinaryInstaller $binaryInstaller = null
+        IOInterface $io,
+        Composer $composer,
+        $type = 'drupal',
+        Filesystem $filesystem = null,
+        BinaryInstaller $binaryInstaller = null
     ) {
         parent::__construct($io, $composer, $type, $filesystem,
-          $binaryInstaller);
+            $binaryInstaller);
 
         $this->types = [
-          "drupal-core",
-          "drupal-drush",
-          "drupal-library",
-          "drupal-module",
-          "drupal-custom-module",
-          "drupal-theme",
-          "drupal-custom-theme",
-          "drupal-profile",
-          "drupal-custom-profile",
+            "drupal-core",
+            "drupal-drush",
+            "drupal-library",
+            "drupal-module",
+            "drupal-custom-module",
+            "drupal-theme",
+            "drupal-custom-theme",
+            "drupal-profile",
+            "drupal-custom-profile",
         ];
 
         // Load configuration from composer.json
@@ -198,7 +198,7 @@ class DrupalInstaller extends LibraryInstaller
 
     /**
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return mixed|null
      */
@@ -219,6 +219,7 @@ class DrupalInstaller extends LibraryInstaller
         if (strpos($name, '/') !== false) {
             list(, $name) = explode('/', $name);
         }
+
         return $name;
     }
 

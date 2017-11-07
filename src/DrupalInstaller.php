@@ -145,8 +145,6 @@ class DrupalInstaller extends LibraryInstaller
         $this->package = $package;
         $packageType = $this->package->getType();
 
-        $custom = (strpos($packageType, 'custom') !== false) ? true : false;
-
         switch ($packageType) {
             case "drupal-core":
                 $type = self::CORE;
@@ -178,7 +176,7 @@ class DrupalInstaller extends LibraryInstaller
         }
 
         $base = $this->getBase($type);
-        $target = $this->getTargetPath($type, $custom);
+        $target = $this->getTargetPath($type);
 
         $path = (!empty($base)) ? "$base/$target" : $target;
 
@@ -227,12 +225,11 @@ class DrupalInstaller extends LibraryInstaller
      * Get the target path after the root for the package
      *
      * @param string $type
-     * @param bool $custom
      *
      * @return string
      * @throws \Exception
      */
-    protected function getTargetPath($type, $custom = false)
+    protected function getTargetPath($type)
     {
         switch ($type) {
             case self::CORE:
@@ -258,7 +255,7 @@ class DrupalInstaller extends LibraryInstaller
         }
 
         if (self::CORE !== $type && self::LIBRARY !== $type) {
-            $path .= $custom ? "/custom" : "/contrib";
+            $path .= $this->isPackageCustom() ? "/custom" : "/contrib";
         }
 
         if (self::CORE !== $type) {
@@ -267,5 +264,12 @@ class DrupalInstaller extends LibraryInstaller
         }
 
         return $path;
+    }
+
+    protected function isPackageCustom()
+    {
+        $packageType = $this->package->getType();
+
+        return (strpos($packageType, 'custom') !== false) ? true : false;
     }
 }

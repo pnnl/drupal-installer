@@ -12,7 +12,6 @@
     }
   },
   "conflict": {
-    "composer/installers": "*",
     "drupal/drupal": "7.*"
   },
   "description": "Composer installer for Drupal modules, themes, etc",

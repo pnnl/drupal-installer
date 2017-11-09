@@ -1,4 +1,6 @@
 # Drupal 7 Composer Installer
+[![Coverage Status](https://coveralls.io/repos/github/pnnl/drupal-installer/badge.svg?branch=master)](https://coveralls.io/github/pnnl/drupal-installer?branch=master)
+
 A composer installer for Drupal 7. Installs modules, themes, etc to their proper location within the Drupal filesystem.
 
 ## How to install

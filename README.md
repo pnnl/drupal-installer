@@ -5,7 +5,7 @@ A composer installer for Drupal. Installs modules, themes, etc to their proper l
 
 ## How to install
 ```bash
-composer require pnnl/drupal-installer:^7.0
+composer require pnnl/drupal-installer:^8.0
 ```
 
 Major version corresponds to major Drupal version.

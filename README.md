@@ -34,3 +34,18 @@ Support `npm-asset` and `bower-asset`
 as `drupal-library`'s.
 This installs packages of type `npm-asset` and `bower-asset` into Drupal's libraries folder.  
 Default: `true`. Support for NPM and Bower assets can be enabled/disabled individually.
+
+This does conflict with [`composer/installers`](https://packagist.org/packages/composer/installers). If your project or a dependency requires [`composer/installers`](https://packagist.org/packages/composer/installers) you
+can disable [`composer/installers`](https://packagist.org/packages/composer/installers)'s Drupal installer with the following `extra` config and this [patch](https://gist.githubusercontent.com/thomscode/8ad286a97ce9efbdf5829ba9e79fcb85/raw/9387aa8aea2ca3f870b61d44c38ff2e5211d271b/composer-installers.diff).
+
+```json
+{
+  "extra": {
+    "installer-disable": [
+      "drupal"
+    ]
+  }
+}
+```
+
+Patch can be automatically applied by composer using [`cweagans/composer-patches`](https://packagist.org/packages/cweagans/composer-patches).

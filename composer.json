@@ -34,6 +34,5 @@
   "scripts": {
     "test": "phpunit"
   },
-  "type": "composer-plugin",
-  "version": "8.0.1"
+  "type": "composer-plugin"
 }

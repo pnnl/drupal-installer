@@ -1,4 +1,5 @@
 # Drupal Installer for Composer
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/PNNL/Drupal-Installer/blob/master/LICENSE)
 [![Coverage Status](https://coveralls.io/repos/github/pnnl/drupal-installer/badge.svg?branch=master)](https://coveralls.io/github/pnnl/drupal-installer?branch=master)
 
 A composer installer for Drupal. Installs modules, themes, etc to their proper location within the Drupal filesystem.

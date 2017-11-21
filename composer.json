@@ -24,12 +24,12 @@
   "prefer-stable": true,
   "require": {
     "composer-plugin-api": "^1.1",
-    "php": ">=5.5.0",
-    "phpunit/phpunit": "^5.7"
+    "php": ">=5.5.0"
   },
   "require-dev": {
     "composer/composer": "^1.5",
-    "php-coveralls/php-coveralls": "^2.0"
+    "php-coveralls/php-coveralls": "^2.0",
+    "phpunit/phpunit": "^5.7"
   },
   "scripts": {
     "test": "phpunit"

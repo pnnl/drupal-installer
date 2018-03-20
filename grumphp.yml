@@ -1,0 +1,16 @@
+parameters:
+  tasks:
+    composer: ~
+    file_size: ~
+    jsonlint: ~
+    phpcs:
+      standard: PSR2
+    phplint:
+      triggered_by: ["php"]
+    phpmd: ~
+    phpparser:
+      kind: php5
+    phpversion:
+      project: "5.6"
+    yamllint: ~
+    securitychecker: ~

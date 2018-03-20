@@ -117,7 +117,7 @@ class DrupalInstaller extends LibraryInstaller
         ];
 
         // Load configuration from composer.json
-        $extra = $this->composer->getPackage()->getExtra();
+        $extra = $this->composer->getConfig()->get('extra');
         $this->config = empty($extra[self::EXTRA]) ? [] : $extra[self::EXTRA];
 
         // Retrieve configuration values into class
@@ -163,9 +163,20 @@ class DrupalInstaller extends LibraryInstaller
                 $type = self::DRUSH;
                 break;
             case "drupal-library":
+                $type = self::LIBRARY;
+                break;
             case self::NPM_TYPE:
+                if (!$this->npm) {
+                    $message = "$packageType support has been disabled";
+                    throw new \Exception($message);
+                }
+                $type = self::LIBRARY;
+                break;
             case self::BOWER_TYPE:
-                // NPM_TYPE and BOWER_TYPE will only be referenced if already supported.
+                if (!$this->bower) {
+                    $message = "$packageType support has been disabled";
+                    throw new \Exception($message);
+                }
                 $type = self::LIBRARY;
                 break;
             case "drupal-custom-module":

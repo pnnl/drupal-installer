@@ -8,7 +8,6 @@
 
 namespace pnnl\Composer;
 
-
 use Composer\Composer;
 use Composer\Installer\BinaryInstaller;
 use Composer\Installer\LibraryInstaller;
@@ -87,27 +86,34 @@ class DrupalInstaller extends LibraryInstaller
      * @param string               $type
      * @param Filesystem|null      $filesystem
      * @param BinaryInstaller|null $binaryInstaller
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function __construct(
-      IOInterface $io,
-      Composer $composer,
-      $type = 'drupal',
-      Filesystem $filesystem = null,
-      BinaryInstaller $binaryInstaller = null
+        IOInterface $io,
+        Composer $composer,
+        $type = 'drupal',
+        Filesystem $filesystem = null,
+        BinaryInstaller $binaryInstaller = null
     ) {
-        parent::__construct($io, $composer, $type, $filesystem,
-          $binaryInstaller);
+        parent::__construct(
+            $io,
+            $composer,
+            $type,
+            $filesystem,
+            $binaryInstaller
+        );
 
         $this->types = [
-          "drupal-core",
-          "drupal-drush",
-          "drupal-library",
-          "drupal-module",
-          "drupal-custom-module",
-          "drupal-theme",
-          "drupal-custom-theme",
-          "drupal-profile",
-          "drupal-custom-profile",
+            "drupal-core",
+            "drupal-drush",
+            "drupal-library",
+            "drupal-module",
+            "drupal-custom-module",
+            "drupal-theme",
+            "drupal-custom-theme",
+            "drupal-profile",
+            "drupal-custom-profile",
         ];
 
         // Load configuration from composer.json
@@ -138,6 +144,10 @@ class DrupalInstaller extends LibraryInstaller
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getInstallPath(PackageInterface $package)
     {
@@ -178,7 +188,7 @@ class DrupalInstaller extends LibraryInstaller
         $base = $this->getBase($type);
         $target = $this->getTargetPath($type);
 
-        $path = (!empty($target)) ? "$base/$target" : $base;
+        $path = (!empty($base)) ? "$base/$target" : $target;
 
         return $path;
     }
@@ -234,9 +244,12 @@ class DrupalInstaller extends LibraryInstaller
      *
      * @return string
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getTargetPath($type)
     {
+        $path = '';
         switch ($type) {
             case self::CORE:
                 $path = '';
@@ -256,8 +269,6 @@ class DrupalInstaller extends LibraryInstaller
             case self::PROFILE:
                 $path = "profiles";
                 break;
-            default:
-                throw new \Exception("Unsupported package type: $type");
         }
 
         if (self::MODULE === $type || self::THEME === $type) {

@@ -8,7 +8,6 @@
 
 namespace pnnl\Composer;
 
-
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
@@ -17,6 +16,8 @@ use Composer\Plugin\PluginInterface;
  * Class DrupalInstallerPlugin
  *
  * @package pnnl\Composer
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class DrupalInstallerPlugin implements PluginInterface
 {

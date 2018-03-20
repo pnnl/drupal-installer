@@ -8,7 +8,6 @@
 
 namespace pnnl\Composer;
 
-
 use Composer\Composer;
 use Composer\Installer\BinaryInstaller;
 use Composer\Installer\LibraryInstaller;
@@ -87,6 +86,8 @@ class DrupalInstaller extends LibraryInstaller
      * @param string               $type
      * @param Filesystem|null      $filesystem
      * @param BinaryInstaller|null $binaryInstaller
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function __construct(
         IOInterface $io,
@@ -95,8 +96,13 @@ class DrupalInstaller extends LibraryInstaller
         Filesystem $filesystem = null,
         BinaryInstaller $binaryInstaller = null
     ) {
-        parent::__construct($io, $composer, $type, $filesystem,
-            $binaryInstaller);
+        parent::__construct(
+            $io,
+            $composer,
+            $type,
+            $filesystem,
+            $binaryInstaller
+        );
 
         $this->types = [
             "drupal-core",
@@ -138,6 +144,8 @@ class DrupalInstaller extends LibraryInstaller
 
     /**
      * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getInstallPath(PackageInterface $package)
     {
@@ -228,6 +236,8 @@ class DrupalInstaller extends LibraryInstaller
      *
      * @return string
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getTargetPath($type)
     {

@@ -25,11 +25,6 @@ final class InstallerTest extends TestCase
 
     /**
      * TODO:
-     * Assert supports
-     *    Add all types
-     *
-     * Assert paths are correct
-     *
      * Assert config updates appropriately
      *  Change Docroot
      *  Disable Bower and NPM asset support

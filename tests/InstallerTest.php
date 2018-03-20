@@ -104,6 +104,7 @@ final class InstallerTest extends TestCase
         $consumerPackage = new RootPackage("foo/bar", "1.0.0", "1.0.0");
         $this->composer->setPackage($consumerPackage);
     }
+
     public function tearDown()
     {
         $this->filesystem->remove($this->vendorDir);
@@ -206,51 +207,56 @@ final class InstallerTest extends TestCase
     public function dataForTestInstallPath()
     {
         return [
-            ["drupal-core", 'docroot/core', 'drupal/core', '8.0.0'],
-            ["drupal-drush", 'drush/contrib/drush', 'drush/drush', '9.0.0'],
+            ["drupal-core", 'docroot/', 'drupal/drupal', '7.0.0'],
+            [
+                "drupal-drush",
+                'docroot/sites/all/drush/drush',
+                'drush/drush',
+                '8.0.0',
+            ],
             [
                 "drupal-library",
-                'docroot/libraries/my_library',
+                'docroot/sites/all/libraries/my_library',
                 'pnnl/my_library',
             ],
             [
                 "drupal-module",
-                'docroot/modules/contrib/my_module',
+                'docroot/sites/all/modules/contrib/my_module',
                 'pnnl/my_module',
             ],
             [
                 "drupal-custom-module",
-                'docroot/modules/custom/my_custom_module',
+                'docroot/sites/all/modules/custom/my_custom_module',
                 'pnnl/my_custom_module',
             ],
             [
                 "drupal-theme",
-                'docroot/themes/contrib/my_theme',
+                'docroot/sites/all/themes/contrib/my_theme',
                 'pnnl/my_theme',
             ],
             [
                 "drupal-custom-theme",
-                'docroot/themes/custom/my_custom_theme',
+                'docroot/sites/all/themes/custom/my_custom_theme',
                 'pnnl/my_custom_theme',
             ],
             [
                 "drupal-profile",
-                'docroot/profiles/contrib/my_profile',
+                'docroot/profiles/my_profile',
                 'pnnl/my_profile',
             ],
             [
                 "drupal-custom-profile",
-                'docroot/profiles/custom/my_custom_profile',
+                'docroot/profiles/my_custom_profile',
                 'pnnl/my_custom_profile',
             ],
             [
                 "npm-asset",
-                'docroot/libraries/my_npm_asset',
+                'docroot/sites/all/libraries/my_npm_asset',
                 'npm-asset/my_npm_asset',
             ],
             [
                 "bower-asset",
-                'docroot/libraries/my_bower_asset',
+                'docroot/sites/all/libraries/my_bower_asset',
                 'bower-asset/my_bower_asset',
             ],
             ["package", "vendor/pnnl/my_package", "pnnl/my_package"],

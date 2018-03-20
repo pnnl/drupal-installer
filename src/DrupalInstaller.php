@@ -145,6 +145,8 @@ class DrupalInstaller extends LibraryInstaller
     /**
      * {@inheritDoc}
      *
+     * @throws \Exception
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getInstallPath(PackageInterface $package)
@@ -241,6 +243,7 @@ class DrupalInstaller extends LibraryInstaller
      */
     protected function getTargetPath($type)
     {
+        $path = '';
         switch ($type) {
             case self::CORE:
                 $path = 'core';
@@ -260,8 +263,6 @@ class DrupalInstaller extends LibraryInstaller
             case self::PROFILE:
                 $path = "profiles";
                 break;
-            default:
-                throw new \Exception("Unsupported package type: $type");
         }
 
         if (self::CORE !== $type && self::LIBRARY !== $type) {

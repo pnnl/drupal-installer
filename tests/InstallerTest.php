@@ -23,13 +23,6 @@ use Symfony\Component\Filesystem\Filesystem;
 final class InstallerTest extends TestCase
 {
 
-    /**
-     * TODO:
-     * Assert config updates appropriately
-     *  Change Docroot
-     *  Disable Bower and NPM asset support
-     */
-
     /** @var Composer $composer */
     private $composer;
 
@@ -268,5 +261,81 @@ final class InstallerTest extends TestCase
         $this->imMock->expects($this->once())->method('addInstaller');
         $plugin = new DrupalInstallerPlugin();
         $plugin->activate($this->composer, $this->ioMock);
+    }
+
+    /**
+     * testAlteredDocroot
+     *
+     * Test that the docroot actually changes
+     *
+     * @coversNothing
+     * @throws \Exception
+     */
+    public function testAlteredDocroot()
+    {
+        $this->alterConfig();
+
+        $this->testInstallPath(
+            'drupal-core',
+            'drupal/core',
+            'drupal/core',
+            '8.0.0'
+        );
+    }
+
+    /**
+     * testNoNpmSupport
+     *
+     * Test that npm support is properly disabled
+     *
+     * @covers \pnnl\Composer\DrupalInstaller::getInstallPath()
+     * @throws \Exception
+     */
+    public function testNoNpmSupport()
+    {
+        $this->alterConfig();
+
+        $this->testSupports('npm-asset', false);
+        $this->expectException(\Exception::class);
+        $this->testInstallPath(
+            "npm-asset",
+            'drupal/libraries/my_npm_asset',
+            'npm-asset/my_npm_asset'
+        );
+    }
+
+    /**
+     * testNoBowerSupport
+     *
+     * Test that bower support is actually disabled
+     *
+     * @covers \pnnl\Composer\DrupalInstaller::getInstallPath()
+     * @throws \Exception
+     */
+    public function testNoBowerSupport()
+    {
+        $this->alterConfig();
+
+        $this->testSupports('npm-asset', false);
+        $this->expectException(\Exception::class);
+        $this->testInstallPath(
+            "bower-asset",
+            'drupal/libraries/my_bower_asset',
+            'bower-asset/my_bower_asset'
+        );
+    }
+
+    /**
+     * Alter config to check configurable settings
+     */
+    private function alterConfig()
+    {
+        $settings = [
+            "webroot"       => "drupal",
+            "npm-support"   => false,
+            "bower-support" => false,
+        ];
+        $config['config']['extra']['drupal-installer'] = $settings;
+        $this->config->merge($config);
     }
 }

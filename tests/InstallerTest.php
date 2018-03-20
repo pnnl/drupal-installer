@@ -11,10 +11,13 @@ namespace pnnl\Tests;
 use Composer\Composer;
 use Composer\Config;
 use Composer\Downloader\DownloadManager;
+use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
+use Composer\Package\Package;
 use Composer\Package\RootPackage;
 use Composer\Repository\RepositoryInterface;
 use pnnl\Composer\DrupalInstaller;
+use pnnl\Composer\DrupalInstallerPlugin;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class InstallerTest extends TestCase
@@ -47,43 +50,61 @@ final class InstallerTest extends TestCase
     /** @var DownloadManager $downloadManager */
     private $downloadManager;
 
-    /** @var RepositoryInterface $repository */
-    private $repository;
+    /** @var RepositoryInterface $repoMock */
+    private $repoMock;
 
     /** @var IOInterface $ioMock */
     private $ioMock;
+
+    /** @var InstallationManager|\PHPUnit_Framework_MockObject_MockObject $imMock */
+    private $imMock;
 
     /** @var Filesystem $filesystem */
     private $filesystem;
 
     public function setUp()
     {
+        $realPath = realpath(sys_get_temp_dir());
+
         $this->filesystem = new Filesystem();
 
         $this->composer = new Composer();
         $this->config = new Config();
         $this->composer->setConfig($this->config);
 
-        $this->vendorDir = realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . "baton-test-vendor";
+        $this->vendorDir = $realPath . DIRECTORY_SEPARATOR . "baton-test-vendor";
         $this->ensureDirectoryExistsAndClear($this->vendorDir);
 
-        $this->binDir = realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . 'baton-test-bin';
+        $this->binDir = $realPath . DIRECTORY_SEPARATOR . 'baton-test-bin';
         $this->ensureDirectoryExistsAndClear($this->binDir);
 
-        $this->config->merge([
-            'config' => [
-                'vendor-dir' => $this->vendorDir,
-                'bin-dir' => $this->binDir,
-            ],
-        ]);
+        $this->config->merge(
+            [
+                'config' => [
+                    'vendor-dir' => $this->vendorDir,
+                    'bin-dir'    => $this->binDir,
+                ],
+            ]
+        );
 
-        $this->downloadManager = $this->getMockBuilder("Composer\Downloader\DownloadManager")
+        // Setup classes to mock
+        $downloadClass = "Composer\Downloader\DownloadManager";
+        $repoClass = "Composer\Repository\InstalledRepositoryInterface";
+        $ioClass = "Composer\IO\IOInterface";
+        $imClass = "Composer\Installer\InstallationManager";
+
+        // Create mock objects
+        $this->downloadManager = $this->getMockBuilder($downloadClass)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->composer->setDownloadManager($this->downloadManager);
 
-        $this->repository = $this->createMock("Composer\Repository\InstalledRepositoryInterface");
-        $this->ioMock = $this->createMock("Composer\IO\IOInterface");
+        $this->repoMock = $this->createMock($repoClass);
+        $this->ioMock = $this->createMock($ioClass);
+        $this->imMock = $this->createMock($imClass);
+
+        // Setup Composer managers
+        $this->composer->setDownloadManager($this->downloadManager);
+        $this->composer->setInstallationManager($this->imMock);
 
         $consumerPackage = new RootPackage("foo/bar", "1.0.0", "1.0.0");
         $this->composer->setPackage($consumerPackage);
@@ -102,13 +123,21 @@ final class InstallerTest extends TestCase
      * @param $expected
      *
      * @return void
+     *
+     * @covers       \pnnl\Composer\DrupalInstaller::__construct()
+     * @covers       \pnnl\Composer\DrupalInstaller::getConfig()
+     * @covers       \pnnl\Composer\DrupalInstaller::supports()
      * @dataProvider dataForTestSupport
      */
     public function testSupports($type, $expected)
     {
         $installer = new DrupalInstaller($this->ioMock, $this->composer);
         $errorMessage = sprintf('Failed to show support for %s', $type);
-        $this->assertSame($expected, $installer->supports($type), $errorMessage);
+        $this->assertSame(
+            $expected,
+            $installer->supports($type),
+            $errorMessage
+        );
     }
 
     /**
@@ -141,5 +170,108 @@ final class InstallerTest extends TestCase
             ["project", false],
             ["composer-plugin", false],
         ];
+    }
+
+    /**
+     * testInstallPath
+     *
+     * @param string $type
+     * @param string $path
+     * @param string $name
+     * @param string $version
+     * @throws \Exception
+     *
+     * @covers       \pnnl\Composer\DrupalInstaller::__construct()
+     * @covers       \pnnl\Composer\DrupalInstaller::getBase()
+     * @covers       \pnnl\Composer\DrupalInstaller::getConfig()
+     * @covers       \pnnl\Composer\DrupalInstaller::getInstallPath()
+     * @covers       \pnnl\Composer\DrupalInstaller::getPackageName()
+     * @covers       \pnnl\Composer\DrupalInstaller::getTargetPath()
+     * @covers       \pnnl\Composer\DrupalInstaller::isPackageCustom()
+     *
+     * @dataProvider dataforTestInstallPath
+     */
+    public function testInstallPath($type, $path, $name, $version = '1.0.0')
+    {
+        if ('package' == $type) {
+            $this->expectException(\Exception::class);
+        }
+        $installer = new DrupalInstaller($this->ioMock, $this->composer);
+        $package = new Package($name, $version, $version);
+
+        $package->setType($type);
+        $result = $installer->getInstallPath($package);
+        $this->assertEquals($path, $result);
+    }
+
+    /**
+     * dataForTestInstallPath
+     *
+     * @return array
+     */
+    public function dataForTestInstallPath()
+    {
+        return [
+            ["drupal-core", 'docroot/core', 'drupal/core', '8.0.0'],
+            ["drupal-drush", 'drush/contrib/drush', 'drush/drush', '9.0.0'],
+            [
+                "drupal-library",
+                'docroot/libraries/my_library',
+                'pnnl/my_library',
+            ],
+            [
+                "drupal-module",
+                'docroot/modules/contrib/my_module',
+                'pnnl/my_module',
+            ],
+            [
+                "drupal-custom-module",
+                'docroot/modules/custom/my_custom_module',
+                'pnnl/my_custom_module',
+            ],
+            [
+                "drupal-theme",
+                'docroot/themes/contrib/my_theme',
+                'pnnl/my_theme',
+            ],
+            [
+                "drupal-custom-theme",
+                'docroot/themes/custom/my_custom_theme',
+                'pnnl/my_custom_theme',
+            ],
+            [
+                "drupal-profile",
+                'docroot/profiles/contrib/my_profile',
+                'pnnl/my_profile',
+            ],
+            [
+                "drupal-custom-profile",
+                'docroot/profiles/custom/my_custom_profile',
+                'pnnl/my_custom_profile',
+            ],
+            [
+                "npm-asset",
+                'docroot/libraries/my_npm_asset',
+                'npm-asset/my_npm_asset',
+            ],
+            [
+                "bower-asset",
+                'docroot/libraries/my_bower_asset',
+                'bower-asset/my_bower_asset',
+            ],
+            ["package", "vendor/pnnl/my_package", "pnnl/my_package"],
+        ];
+    }
+
+    /**
+     * testActivate
+     *
+     * @covers \pnnl\Composer\DrupalInstallerPlugin::activate()
+     */
+    public function testActivate()
+    {
+        $this->imMock->expects($this->once())->method('addInstaller');
+        $plugin = new DrupalInstallerPlugin();
+        $plugin->activate($this->composer, $this->ioMock);
     }
 }

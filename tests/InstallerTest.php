@@ -282,9 +282,9 @@ final class InstallerTest extends TestCase
 
         $this->testInstallPath(
             'drupal-core',
-            'drupal/core',
-            'drupal/core',
-            '8.0.0'
+            'drupal/',
+            'drupal/drupal',
+            '7.0.0'
         );
     }
 
@@ -304,7 +304,7 @@ final class InstallerTest extends TestCase
         $this->expectException(\Exception::class);
         $this->testInstallPath(
             "npm-asset",
-            'drupal/libraries/my_npm_asset',
+            'drupal/sites/all/libraries/my_npm_asset',
             'npm-asset/my_npm_asset'
         );
     }
@@ -325,7 +325,7 @@ final class InstallerTest extends TestCase
         $this->expectException(\Exception::class);
         $this->testInstallPath(
             "bower-asset",
-            'drupal/libraries/my_bower_asset',
+            'drupal/sites/all/libraries/my_bower_asset',
             'bower-asset/my_bower_asset'
         );
     }

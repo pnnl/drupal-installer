@@ -193,7 +193,6 @@ class DrupalInstaller extends LibraryInstaller
                 break;
             default:
                 throw new \Exception("Unsupported type: $packageType");
-                break;
         }
 
         $base = $this->getBase($type);

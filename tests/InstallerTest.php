@@ -107,8 +107,9 @@ final class InstallerTest extends TestCase
     /**
      * testSupports
      *
-     * @param $type
-     * @param $expected
+     * @param string $type - type of composer package to check
+     * @param bool   $expected - The expected support value
+     * @param bool   $alterConfig - Should config be altered
      *
      * @return void
      *
@@ -116,9 +117,14 @@ final class InstallerTest extends TestCase
      * @covers       \pnnl\Composer\DrupalInstaller::getConfig()
      * @covers       \pnnl\Composer\DrupalInstaller::supports()
      * @dataProvider dataForTestSupport
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
-    public function testSupports($type, $expected)
+    public function testSupports($type, $expected, $alterConfig = false)
     {
+        if ($alterConfig) {
+            $this->alterConfig();
+        }
         $installer = new DrupalInstaller($this->ioMock, $this->composer);
         $errorMessage = sprintf('Failed to show support for %s', $type);
         $this->assertSame(
@@ -147,6 +153,8 @@ final class InstallerTest extends TestCase
             ["drupal-custom-profile", true],
             ["npm-asset", true],
             ["bower-asset", true],
+            ["npm-asset", false, true],
+            ["bower-asset", false, true],
             ["drupal", false],
             ["drush", false],
             ["module", false],
@@ -163,10 +171,11 @@ final class InstallerTest extends TestCase
     /**
      * testInstallPath
      *
-     * @param string $type
-     * @param string $path
-     * @param string $name
-     * @param string $version
+     * @param string $type - Type of composer package
+     * @param string $path - Expected return path
+     * @param string $name - Package name
+     * @param string $version - Package version
+     * @param bool   $alterConfig - Should config be altered
      * @throws \Exception
      *
      * @covers       \pnnl\Composer\DrupalInstaller::__construct()
@@ -178,12 +187,34 @@ final class InstallerTest extends TestCase
      * @covers       \pnnl\Composer\DrupalInstaller::isPackageCustom()
      *
      * @dataProvider dataforTestInstallPath
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
-    public function testInstallPath($type, $path, $name, $version = '1.0.0')
-    {
-        if ('package' == $type) {
+    public function testInstallPath(
+        $type,
+        $path,
+        $name,
+        $version = '1.0.0',
+        $alterConfig = false
+    ) {
+        // Alter the configuration to change the docroot and disable optional types
+        if ($alterConfig) {
+            $this->alterConfig();
+        }
+        // Expect an exception in these cases
+        $expectException = (
+            'package' == $type ||
+            (
+                $alterConfig &&
+                strpos($type, '-asset') !== false
+            )
+        );
+
+        if ($expectException) {
             $this->expectException(\Exception::class);
         }
+
+        // Test the conditions
         $installer = new DrupalInstaller($this->ioMock, $this->composer);
         $package = new Package($name, $version, $version);
 
@@ -247,6 +278,20 @@ final class InstallerTest extends TestCase
                 'docroot/libraries/my_bower_asset',
                 'bower-asset/my_bower_asset',
             ],
+            [
+                "npm-asset",
+                'docroot/libraries/my_npm_asset',
+                'npm-asset/my_npm_asset',
+                '1.0.0',
+                true,
+            ],
+            [
+                "bower-asset",
+                'docroot/libraries/my_bower_asset',
+                'bower-asset/my_bower_asset',
+                '1.0.0',
+                true,
+            ],
             ["package", "vendor/pnnl/my_package", "pnnl/my_package"],
         ];
     }
@@ -261,68 +306,6 @@ final class InstallerTest extends TestCase
         $this->imMock->expects($this->once())->method('addInstaller');
         $plugin = new DrupalInstallerPlugin();
         $plugin->activate($this->composer, $this->ioMock);
-    }
-
-    /**
-     * testAlteredDocroot
-     *
-     * Test that the docroot actually changes
-     *
-     * @coversNothing
-     * @throws \Exception
-     */
-    public function testAlteredDocroot()
-    {
-        $this->alterConfig();
-
-        $this->testInstallPath(
-            'drupal-core',
-            'drupal/core',
-            'drupal/core',
-            '8.0.0'
-        );
-    }
-
-    /**
-     * testNoNpmSupport
-     *
-     * Test that npm support is properly disabled
-     *
-     * @covers \pnnl\Composer\DrupalInstaller::getInstallPath()
-     * @throws \Exception
-     */
-    public function testNoNpmSupport()
-    {
-        $this->alterConfig();
-
-        $this->testSupports('npm-asset', false);
-        $this->expectException(\Exception::class);
-        $this->testInstallPath(
-            "npm-asset",
-            'drupal/libraries/my_npm_asset',
-            'npm-asset/my_npm_asset'
-        );
-    }
-
-    /**
-     * testNoBowerSupport
-     *
-     * Test that bower support is actually disabled
-     *
-     * @covers \pnnl\Composer\DrupalInstaller::getInstallPath()
-     * @throws \Exception
-     */
-    public function testNoBowerSupport()
-    {
-        $this->alterConfig();
-
-        $this->testSupports('npm-asset', false);
-        $this->expectException(\Exception::class);
-        $this->testInstallPath(
-            "bower-asset",
-            'drupal/libraries/my_bower_asset',
-            'bower-asset/my_bower_asset'
-        );
     }
 
     /**

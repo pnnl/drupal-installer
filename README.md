@@ -62,7 +62,7 @@ Use patched version:
     }
   ],
   "require": {
-    "composer/installers": "dev-disable-installers as 1.4.x-dev"
+    "composer/installers": "dev-disable-installers as 1.5.x-dev"
   }
 }
 ```

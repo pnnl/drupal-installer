@@ -7,7 +7,11 @@
   ],
   "autoload": {
     "psr-4": {
-      "pnnl\\Composer\\": "src",
+      "pnnl\\Composer\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "pnnl\\Tests\\": "tests"
     }
   },

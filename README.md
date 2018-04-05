@@ -28,17 +28,18 @@ No configuration required. Will install all Drupal components to their proper lo
 }
 ```
 
-The Drupal webroot is configurable relative to the root of your repository.  
+The Drupal webroot is configurable relative to the root of your repository.
 Default webroot is `docroot`.
+
+
 
 Supports `npm-asset` and `bower-asset`
 (from [fxp/composer-asset-plugin](https://packagist.org/packages/fxp/composer-asset-plugin) and [hiqdev/asset-packagist](https://packagist.org/packages/hiqdev/asset-packagist))
 as `drupal-library`'s.
-This installs packages of type `npm-asset` and `bower-asset` into Drupal's libraries folder.  
+This installs packages of type `npm-asset` and `bower-asset` into Drupal's libraries folder.
 Default: `true`. Support for NPM and Bower assets can be enabled/disabled individually.
 
-This does conflict with [`composer/installers`](https://packagist.org/packages/composer/installers). If your project or a dependency requires [`composer/installers`](https://packagist.org/packages/composer/installers) you
-can disable [`composer/installers`](https://packagist.org/packages/composer/installers)'s Drupal installer with the following `extra` config and this [patch](https://gist.githubusercontent.com/thomscode/8ad286a97ce9efbdf5829ba9e79fcb85/raw/9387aa8aea2ca3f870b61d44c38ff2e5211d271b/composer-installers.diff). Or use the patched fork at [thomscode/installers](https://github.com/thomscode/installers)
+This does conflict with [`composer/installers`](https://packagist.org/packages/composer/installers). If your project or a dependency requires [`composer/installers`](https://packagist.org/packages/composer/installers) you can disable [`composer/installers`](https://packagist.org/packages/composer/installers)'s Drupal installer with the following `extra` config and this the latest dev version of `composer/installers`.
 
 ```json
 {
@@ -50,19 +51,12 @@ can disable [`composer/installers`](https://packagist.org/packages/composer/inst
 }
 ```
 
-The patch can be automatically applied by composer using [`cweagans/composer-patches`](https://packagist.org/packages/cweagans/composer-patches).
+You can use this version of `composer/installers` by including it as follows in your `composer.json` file.
 
-Use patched version:
 ```json
 {
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/thomscode/installers.git"
-    }
-  ],
   "require": {
-    "composer/installers": "dev-disable-installers as 1.5.x-dev"
+    "composer/installers": "dev-master as 1.5.x-dev"
   }
 }
 ```

@@ -56,7 +56,7 @@ You can use this version of `composer/installers` by including it as follows in 
 ```json
 {
   "require": {
-    "composer/installers": "dev-master as 1.5.x-dev"
+    "composer/installers": "^1.5"
   }
 }
 ```

@@ -1,4 +1,4 @@
-parameters:
+grumphp:
   tasks:
     composer: ~
     file_size: ~

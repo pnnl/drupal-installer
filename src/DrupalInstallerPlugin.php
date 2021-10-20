@@ -27,8 +27,8 @@ class DrupalInstallerPlugin implements PluginInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        $installer = new DrupalInstaller($io, $composer);
-        $composer->getInstallationManager()->addInstaller($installer);
+        $this->installer = new DrupalInstaller($io, $composer);
+        $composer->getInstallationManager()->addInstaller($this->installer);
     }
 
     /**

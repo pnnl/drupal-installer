@@ -30,4 +30,18 @@ class DrupalInstallerPlugin implements PluginInterface
         $installer = new DrupalInstaller($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deactivate(Composer $composer, IOInterface $io) {
+        $composer->getInstallationManager()->removeInstaller($this->installer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io) {
+    }
+
 }

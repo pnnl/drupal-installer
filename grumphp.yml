@@ -1,4 +1,4 @@
-parameters:
+grumphp:
   tasks:
     composer: ~
     file_size: ~
@@ -9,8 +9,7 @@ parameters:
       triggered_by: ["php"]
     phpmd: ~
     phpparser:
-      kind: php5
+      kind: php7
     phpversion:
-      project: "5.6"
+      project: "7.2"
     yamllint: ~
-    securitychecker: ~

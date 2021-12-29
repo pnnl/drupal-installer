@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: thomscode
@@ -21,7 +22,6 @@ use Composer\Plugin\PluginInterface;
  */
 class DrupalInstallerPlugin implements PluginInterface
 {
-
     /**
      * {@inheritDoc}
      */
@@ -34,14 +34,15 @@ class DrupalInstallerPlugin implements PluginInterface
     /**
      * {@inheritDoc}
      */
-    public function deactivate(Composer $composer, IOInterface $io) {
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
         $composer->getInstallationManager()->removeInstaller($this->installer);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function uninstall(Composer $composer, IOInterface $io) {
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
     }
-
 }

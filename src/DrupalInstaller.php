@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: thomscode
@@ -14,6 +15,7 @@ use Composer\Installer\LibraryInstaller;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Util\Filesystem;
+use Exception;
 
 /**
  * Class DrupalInstaller
@@ -22,42 +24,41 @@ use Composer\Util\Filesystem;
  */
 class DrupalInstaller extends LibraryInstaller
 {
-
     /** @const string EXTRA - key in extra used as config root for this installer */
-    const EXTRA = "drupal-installer";
+    public const EXTRA = "drupal-installer";
 
     /** @const string ROOT - webroot key used in composer.json */
-    const ROOT = "webroot";
+    public const ROOT = "webroot";
 
     /** @const string NPM - npm support key used in composer.json */
-    const NPM = "npm-support";
+    public const NPM = "npm-support";
 
     /** @const string BOWER - bower support key used in composer.json */
-    const BOWER = "bower-support";
+    public const BOWER = "bower-support";
 
     /** @const string NPM_TYPE - type key from npm asset package */
-    const NPM_TYPE = "npm-asset";
+    public const NPM_TYPE = "npm-asset";
 
     /** @const string BOWER_TYPE - type key from bower asset package */
-    const BOWER_TYPE = "bower-asset";
+    public const BOWER_TYPE = "bower-asset";
 
     /** @const int CORE */
-    const CORE = 0;
+    public const CORE = 0;
 
     /** @const int DRUSH */
-    const DRUSH = 1;
+    public const DRUSH = 1;
 
     /** @const int LIBRARY */
-    const LIBRARY = 2;
+    public const LIBRARY = 2;
 
     /** @const int MODULE */
-    const MODULE = 3;
+    public const MODULE = 3;
 
     /** @const int THEME */
-    const THEME = 4;
+    public const THEME = 4;
 
     /** @const int PROFILE */
-    const PROFILE = 5;
+    public const PROFILE = 5;
 
 
     /** @var array $types - types supported by this installer */
@@ -145,7 +146,7 @@ class DrupalInstaller extends LibraryInstaller
     /**
      * {@inheritDoc}
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -168,14 +169,14 @@ class DrupalInstaller extends LibraryInstaller
             case self::NPM_TYPE:
                 if (!$this->npm) {
                     $message = "$packageType support has been disabled";
-                    throw new \Exception($message);
+                    throw new Exception($message);
                 }
                 $type = self::LIBRARY;
                 break;
             case self::BOWER_TYPE:
                 if (!$this->bower) {
                     $message = "$packageType support has been disabled";
-                    throw new \Exception($message);
+                    throw new Exception($message);
                 }
                 $type = self::LIBRARY;
                 break;
@@ -192,7 +193,7 @@ class DrupalInstaller extends LibraryInstaller
                 $type = self::PROFILE;
                 break;
             default:
-                throw new \Exception("Unsupported type: $packageType");
+                throw new Exception("Unsupported type: $packageType");
         }
 
         $base = $this->getBase($type);
@@ -207,7 +208,7 @@ class DrupalInstaller extends LibraryInstaller
      * @param int $type - Type of package (class constant)
      *
      * @return string - base path for package
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getBase($type)
     {
@@ -247,7 +248,7 @@ class DrupalInstaller extends LibraryInstaller
      * @param string $type
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */

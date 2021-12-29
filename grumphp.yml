@@ -4,13 +4,15 @@ grumphp:
     file_size: ~
     jsonlint: ~
     phpcs:
-      standard: PSR2
+      standard: PSR12
     phplint:
       triggered_by: ["php"]
     phpmd: ~
     phpparser:
-      kind: php5
+      kind: php7
     phpversion:
-      project: "5.6"
+      project: "7.3"
     yamllint: ~
-    securitychecker: ~
+    securitychecker_enlightn:
+      lockfile: ./composer.lock
+      run_always: false

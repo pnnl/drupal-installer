@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: will202
@@ -22,7 +23,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class InstallerTest extends TestCase
 {
-
     /** @var Composer $composer */
     private $composer;
 
@@ -313,11 +313,14 @@ final class InstallerTest extends TestCase
      */
     private function alterConfig()
     {
+        $config = '';
+
         $settings = [
             "webroot"       => "drupal",
             "npm-support"   => false,
             "bower-support" => false,
         ];
+
         $config['config']['extra']['drupal-installer'] = $settings;
         $this->config->merge($config);
     }

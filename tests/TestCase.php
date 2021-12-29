@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: will202
@@ -16,7 +17,6 @@ use Composer\Util\Filesystem;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-
     private static $parser;
 
     protected static function getVersionParser()

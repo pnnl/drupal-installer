@@ -10,9 +10,6 @@ grumphp:
     phpmd: ~
     phpparser:
       kind: php7
-      triggered_by: [ "php" ]
-    phpversion:
-      project: '7.3'
     yamllint: ~
     securitychecker_enlightn:
       lockfile: ./composer.lock

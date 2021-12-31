@@ -33,7 +33,7 @@
   "name": "pnnl/drupal-installer",
   "prefer-stable": true,
   "require": {
-    "composer-plugin-api": "^2.0"
+    "composer-plugin-api": "^1.0 || ^2.0"
   },
   "require-dev": {
     "enlightn/security-checker": "^1.9",

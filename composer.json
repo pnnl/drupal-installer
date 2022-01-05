@@ -3,6 +3,10 @@
     {
       "email": "drupal@pnnl.gov",
       "name": "PNNL Drupal Development Team"
+    },
+    {
+      "email": "thomscode@gmail.com",
+      "name": "Thom Williams"
     }
   ],
   "autoload": {
